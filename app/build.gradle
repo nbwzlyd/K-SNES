@@ -1,16 +1,20 @@
 apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 26
+    compileSdkVersion 33
     buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "com.kansus.ksnes"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "0.1"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
+
 
     buildTypes {
         release {
@@ -18,32 +22,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-
-    dependencies {
-        compile supportDependencies.supportV4
-
-        compile "com.google.dagger:dagger:2.9"
-        annotationProcessor "com.google.dagger:dagger-compiler:2.9"
-        provided 'javax.annotation:jsr250-api:1.0'
-    }
 }
 
 dependencies {
-    debugCompile project(path: ':abstractemulator', configuration: "debug")
-    releaseCompile project(path: ':abstractemulator', configuration: "release")
+    implementation "com.google.dagger:dagger:2.28.3"
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.28.3'
 
-    debugCompile project(path: ':snes9x', configuration: "debug")
-    releaseCompile project(path: ':snes9x', configuration: "release")
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation project(':abstractemulator')
+    implementation project(':abstractemulator')
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
 
-    debugCompile project(path: ':input', configuration: "debug")
-    releaseCompile project(path: ':input', configuration: "release")
+    implementation project(':snes9x')
 
-    debugCompile project(path: ':multiplayer', configuration: "debug")
-    releaseCompile project(path: ':multiplayer', configuration: "release")
+    implementation project(':input')
 
-    debugCompile project(path: ':preferences', configuration: "debug")
-    releaseCompile project(path: ':preferences', configuration: "release")
+    implementation project(':multiplayer')
 
-    debugCompile project(path: ':roms', configuration: "debug")
-    releaseCompile project(path: ':roms', configuration: "release")
+    implementation project(':preferences')
+
+    implementation project(':roms')
 }
